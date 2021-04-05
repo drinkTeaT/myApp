@@ -1,7 +1,5 @@
 <template>
-  {{ tabList1 }}
   <view>
-    {{ msg }}
     <AtTabBar fixed :current="current1" :tabList="tabList1" @click="onClick"/>
   </view>
 </template>
@@ -25,12 +23,11 @@ export default {
       // this.tabList1 = [{'title': 22}]
     }
   },
-  onShow() {
+  created() {
     this.msg = 'gg'
     let params = {
       "nodeId": 1
     }
-    // const self = this
     Taro.request({url: 'http://localhost:8099/config/node/getTreeByNodeId', data: params},).then(res => {
       let result = res.data.data
       for (let child = 0; child < result.children.length; child++) {
@@ -39,18 +36,6 @@ export default {
         this.tabList1.push(obj)
       }
     })
-    // axios
-    //   .get('http://localhost:8099/config/node/getTreeByNodeId', {params: params})
-    //   .then(function (response) {
-    //     let result = response.data.data
-    //     for (let child = 0; child < result.children.length; child++) {
-    //       let obj = new Object()
-    //       obj['title'] = result.children[child].label
-    //       self.tabList1.push(obj)
-    //     }
-    //   })
-    //   .catch(function (e) {
-    //   })
   }
 }
 </script>

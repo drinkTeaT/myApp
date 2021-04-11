@@ -13,7 +13,7 @@
                 class='component-content'>
             <!--开始遍历组件类型-->
             <!--轮播图-->
-            <MyCarousel :item="item" :leaf-data-map="leafDataMap"></MyCarousel>
+            <MyCarousel v-show="item.type === 'Carousel'" :item="item" :leaf-data-map="leafDataMap"></MyCarousel>
             <!--球员瀑布流-->
 
           </view>

@@ -1,6 +1,6 @@
 <template>
   <view>
-    <swiper v-show="item.type === 'Carousel'"
+    <swiper
             indicatorColor='#999'
             indicatorActiveColor='#333'
             :circular=true

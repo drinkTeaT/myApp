@@ -1,33 +1,50 @@
 <template>
+  <view v-for="(component,index) in componentData" :key="index">
+    {{component}}
+  </view>
   <view>
     <AtTabBar
       fixed
-      :tabList="tabList1"
-      @click="onClick"
-      :current="current1"
+      :tabList="tabBarData"
+      @click="clickTabBar"
+      :current=0
     />
   </view>
 </template>
+
 <script>
-import {AtTabBar} from "taro-ui-vue3";
 import './index.scss'
+import Taro from "@tarojs/taro";
+import {AtTabBar} from "taro-ui-vue3";
+
 export default {
-  name: 'TabBarPage',
-  components:{AtTabBar},
+  components: {AtTabBar},
   data() {
     return {
-      current1: 1,
-      tabList1: [
-        { title: '待办事项', text: 8 },
-        { title: '拍照' },
-        { title: '通讯录', dot: true }
+      componentData: [],
+      tabBarData: [
+        {title: '首页', iconType: 'home'},
+        {title: '搜索', iconType: 'search'},
+        {title: '设置', iconType: 'settings'}
       ],
     }
   },
   methods: {
-    onClick(value) {
-      this.current1 = value
+    clickTabBar(value) {
+      // this.tabList1 = [{'title': 22}]
+    },
+    initPage() {
+      let params = {
+        "nodeId": 23
+      }
+      Taro.request({url: 'http://localhost:8099/config/node/getTreeByNodeId', data: params},).then(res => {
+        let result = res.data.data.children[0]
+        this.componentData = result.children
+      })
     }
   },
+  created() {
+    this.initPage()
+  }
 }
 </script>

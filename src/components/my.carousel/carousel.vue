@@ -7,7 +7,7 @@
             :autoplay=true
             :indicatorDots=true>
       <swiper-item v-for="(leafData, index) in  leafDataMap[item.id]" :key="index">
-        <image :src="dataToObject(leafData.data).imgSrc" class="slide-image"
+        <image style="border-radius:5px;" :src="dataToObject(leafData.data).imgSrc" class="slide-image"
                @tap="clickSwiperItem(leafData.data)"/>
       </swiper-item>
     </swiper>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-
+import './carousel.scss'
 
 export default {
   name: "MyCarousel",

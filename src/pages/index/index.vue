@@ -13,17 +13,7 @@
                 class='component-content'>
             <!--开始遍历组件类型-->
             <!--轮播图-->
-            <swiper v-show="item.type === 'Carousel'"
-                    indicatorColor='#999'
-                    indicatorActiveColor='#333'
-                    :circular=true
-                    :autoplay=true
-                    :indicatorDots=true>
-              <swiper-item v-for="(leafData, index) in  leadDataMap[item.id]" :key="index">
-                <image :src="dataToObject(leafData.data).imgSrc" class="slide-image"
-                       @tap="clickSwiperItem(leafData.data)"/>
-              </swiper-item>
-            </swiper>
+            <MyCarousel :item="item" :leaf-data-map="leafDataMap"></MyCarousel>
             <!--球员瀑布流-->
 
           </view>
@@ -47,12 +37,13 @@
 import './index.scss'
 import Taro from "@tarojs/taro";
 import {AtTabBar, AtTabs, AtTabsPane} from "taro-ui-vue3";
+import MyCarousel from "../../components/my.carousel/carousel";
 
 export default {
-  components: {AtTabBar, AtTabs, AtTabsPane},
+  components: {MyCarousel, AtTabBar, AtTabs, AtTabsPane},
   data() {
     return {
-      leadDataMap: null,
+      leafDataMap: null,
       tabDataList: [],
       componentData: [],
       tabBarData: [
@@ -93,14 +84,8 @@ export default {
       }
       Taro.request({url: 'http://localhost:8099/config/leaf-data/getAllLeafByRootId', data: params},).then(res => {
         let result = res.data.data
-        self.leadDataMap = result
+        self.leafDataMap = result
       })
-    },
-    dataToObject(json) {
-      return JSON.parse(json)
-    },
-    clickSwiperItem(json) {
-      console.log(json)
     },
     componentStyle(component) {
       return "background-color: " + component.bgColor

@@ -1,41 +1,52 @@
 <template>
   <view>
-    <AtTabBar fixed :current="current1" :tabList="tabList1" @click="onClick"/>
+    <AtTabBar
+      :tabList="[
+        {title: '首页', iconType: 'home'},
+        {title: '搜索', iconType: 'search'},
+        {title: '设置', iconType: 'settings'}
+      ]"
+      @click="clickTabBar"
+      :current=1
+    />
   </view>
 </template>
 
 <script>
 import './index.scss'
-import {AtTabBar} from 'taro-ui-vue3'
-import Taro, {useState, useEffect} from "@tarojs/taro";
+import Taro from "@tarojs/taro";
+import {AtTabBar} from "taro-ui-vue3";
 
 export default {
+  name: 'TabBarPage',
   components: {AtTabBar},
   data() {
     return {
-      msg: '',
-      current1: 0,
-      tabList1: [],
+      componentData: [],
+      tabBarData: [
+        {title: '首页', iconType: 'home'},
+        {title: '搜索', iconType: 'search'},
+        {title: '设置', iconType: 'settings'}
+      ],
     }
   },
   methods: {
-    onClick(value) {
+    clickTabBar(value) {
       // this.tabList1 = [{'title': 22}]
+    },
+    initPage() {
+      let params = {
+        "nodeId": 23
+      }
+      Taro.request({url: 'http://localhost:8099/config/node/getTreeByNodeId', data: params},).then(res => {
+        let result = res.data.data.children[0]
+        this.componentData = result
+        // 初始化数据
+      })
     }
   },
   created() {
-    this.msg = 'gg'
-    let params = {
-      "nodeId": 1
-    }
-    Taro.request({url: 'http://localhost:8099/config/node/getTreeByNodeId', data: params},).then(res => {
-      let result = res.data.data
-      for (let child = 0; child < result.children.length; child++) {
-        let obj = new Object()
-        obj['title'] = result.children[child].label
-        this.tabList1.push(obj)
-      }
-    })
+    this.initPage()
   }
 }
 </script>

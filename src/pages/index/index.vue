@@ -1,23 +1,41 @@
 <template>
   <view>
     <AtTabs
+      fixed
       :swipeable="false"
       :current="atTabCurrent"
       :tabList="tabDataList"
       @click="clickTab"
     >
       <AtTabsPane :current="atTabCurrent" v-for="(component,index) in componentData" :index="atTabCurrent" :key="index">
-        <view class='tab-content'>
-          <view v-for="(item,index) in component.children" :key="index">
+        <scroll-view scrollY="true" style="height: 78vh;" class='tab-content'>
+          <view v-for="(item,index) in component.children" :key="index" :style="componentStyle(item)"
+                class='component-content'>
             <!--开始遍历组件类型-->
+            <!--轮播图-->
+            <swiper v-show="item.type === 'Carousel'"
+                    indicatorColor='#999'
+                    indicatorActiveColor='#333'
+                    :circular=true
+                    :autoplay=true
+                    :indicatorDots=true>
+              <swiper-item v-for="(leafData, index) in  leadDataMap[item.id]" :key="index">
+                <image :src="dataToObject(leafData.data).imgSrc" class="slide-image"
+                       @tap="clickSwiperItem(leafData.data)"/>
+              </swiper-item>
+            </swiper>
+            <!--球员瀑布流-->
+
           </view>
-        </view>
+        </scroll-view>
       </AtTabsPane>
     </AtTabs>
   </view>
   <view>
     <AtTabBar
       fixed
+      :fontSize="10"
+      :iconSize="18"
       :tabList="tabBarData"
       @click="clickTabBar"
       :current=0
@@ -34,6 +52,7 @@ export default {
   components: {AtTabBar, AtTabs, AtTabsPane},
   data() {
     return {
+      leadDataMap: null,
       tabDataList: [],
       componentData: [],
       tabBarData: [
@@ -66,10 +85,30 @@ export default {
           self.tabDataList.push(obj)
         }
       })
+    },
+    initLeafData() {
+      const self = this
+      let params = {
+        "rootId": 23
+      }
+      Taro.request({url: 'http://localhost:8099/config/leaf-data/getAllLeafByRootId', data: params},).then(res => {
+        let result = res.data.data
+        self.leadDataMap = result
+      })
+    },
+    dataToObject(json) {
+      return JSON.parse(json)
+    },
+    clickSwiperItem(json) {
+      console.log(json)
+    },
+    componentStyle(component) {
+      return "background-color: " + component.bgColor
     }
   },
   created() {
     this.initPage()
+    this.initLeafData()
   }
 }
 </script>

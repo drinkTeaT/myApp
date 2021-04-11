@@ -85,6 +85,7 @@ export default {
       Taro.request({url: 'http://localhost:8099/config/leaf-data/getAllLeafByRootId', data: params},).then(res => {
         let result = res.data.data
         self.leafDataMap = result
+        self.initPage()
       })
     },
     componentStyle(component) {
@@ -92,7 +93,6 @@ export default {
     }
   },
   created() {
-    this.initPage()
     this.initLeafData()
   }
 }

@@ -1,4 +1,5 @@
 <template>
+  <view style="display: flex;justify-content: center;font-size: 16px">{{leafConfigData.title}}</view>
   <view class="flex-wrp flex-wrp-row">
     <view v-for="(card, index) in  cardData" :key="index">
       <AtCard

@@ -15,7 +15,8 @@
             <MyCarousel :style="componentStyle(item)" v-if="item.type === 'Carousel'" :item="item"
                         :leaf-data-map="leafDataMap"></MyCarousel>
             <!--球员瀑布流-->
-            <MyCard v-if="item.type === 'Waterfall'" :style="componentStyle(item)" :item="item" :leaf-data-map="leafDataMap"></MyCard>
+            <Waterfall v-if="item.type === 'Waterfall'" :style="componentStyle(item)" :item="item"
+                       :leaf-data-map="leafDataMap"></Waterfall>
           </view>
         </scroll-view>
       </AtTabsPane>
@@ -38,10 +39,10 @@ import './index.scss'
 import Taro from "@tarojs/taro";
 import {AtTabBar, AtTabs, AtTabsPane} from "taro-ui-vue3";
 import MyCarousel from "../../components/my.carousel/carousel";
-import MyCard from "../../components/my.card/player.card";
+import Waterfall from "../../components/my.waterfall/waterfall";
 
 export default {
-  components: {MyCard, MyCarousel, AtTabBar, AtTabs, AtTabsPane},
+  components: {Waterfall, MyCarousel, AtTabBar, AtTabs, AtTabsPane},
   data() {
     return {
       leafDataMap: null,

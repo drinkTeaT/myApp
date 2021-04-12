@@ -8,14 +8,14 @@
       @click="clickTab"
     >
       <AtTabsPane :current="atTabCurrent" v-for="(component,index) in componentData" :index="atTabCurrent" :key="index">
-        <scroll-view scrollY="true" style="height: 78vh;" class='tab-content'>
-          <view v-for="(item,index) in component.children" :key="index" :style="componentStyle(item)"
-                class='component-content'>
+        <scroll-view scrollY="true" style="height: 83vh;" class='tab-content'>
+          <view v-for="(item,index) in component.children" :key="index" class='component-content'>
             <!--开始遍历组件类型-->
             <!--轮播图-->
-            <MyCarousel v-show="item.type === 'Carousel'" :item="item" :leaf-data-map="leafDataMap"></MyCarousel>
+            <MyCarousel :style="componentStyle(item)" v-if="item.type === 'Carousel'" :item="item"
+                        :leaf-data-map="leafDataMap"></MyCarousel>
             <!--球员瀑布流-->
-
+            <MyCard v-if="item.type === 'Waterfall'" :style="componentStyle(item)" :item="item" :leaf-data-map="leafDataMap"></MyCard>
           </view>
         </scroll-view>
       </AtTabsPane>
@@ -38,9 +38,10 @@ import './index.scss'
 import Taro from "@tarojs/taro";
 import {AtTabBar, AtTabs, AtTabsPane} from "taro-ui-vue3";
 import MyCarousel from "../../components/my.carousel/carousel";
+import MyCard from "../../components/my.card/player.card";
 
 export default {
-  components: {MyCarousel, AtTabBar, AtTabs, AtTabsPane},
+  components: {MyCard, MyCarousel, AtTabBar, AtTabs, AtTabsPane},
   data() {
     return {
       leafDataMap: null,
